@@ -9,6 +9,8 @@ public class Train implements RollingComponent {
 
     public Train(String name) {
         this.name = name;
+//        this.components.add(new Locomotive("TrekTrek", 100));
+//        this.components.add(new Cart("DraagDraag", 50));
     }
 
     public Train(String name, List<RollingComponent> components) {
@@ -24,11 +26,12 @@ public class Train implements RollingComponent {
         this.components.remove(index);
     }
 
-    public Integer calculateWeight() {
+
+    public Integer getWeight() {
         int weight = 0;
 
         for (RollingComponent component : this.components) {
-            weight = weight + component.calculateWeight();
+            weight = weight + component.getWeight();
         }
 
         return weight;
@@ -36,5 +39,9 @@ public class Train implements RollingComponent {
 
     public String getName() {
         return this.name;
+    }
+
+    public List<RollingComponent> getComponents() {
+        return components;
     }
 }

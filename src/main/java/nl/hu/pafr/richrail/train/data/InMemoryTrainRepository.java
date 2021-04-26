@@ -1,13 +1,11 @@
 package nl.hu.pafr.richrail.train.data;
 
 import nl.hu.pafr.richrail.train.domain.Train;
+import nl.hu.pafr.richrail.train.domain.TrainNotFoundException;
 import nl.hu.pafr.richrail.train.domain.repository.TrainRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class InMemoryTrainRepository implements TrainRepository {
@@ -19,7 +17,13 @@ public class InMemoryTrainRepository implements TrainRepository {
     }
 
     @Override
-    public void delete(String key) { this.trains.remove(key); }
+    public void delete(String name) {
+        if (!this.trains.containsKey(name)) {
+            throw new TrainNotFoundException();
+        }
+
+        this.trains.remove(name);
+    }
 
     @Override
     public Optional<Train> findByName(String name) {
@@ -33,9 +37,7 @@ public class InMemoryTrainRepository implements TrainRepository {
     }
 
     @Override
-    public java.util.Collection<Train> findAll() {
-        return this.trains.values();
+    public List<Train> findAll() {
+        return new ArrayList<>(this.trains.values());
     }
-
-
 }

@@ -6,6 +6,7 @@ import nl.hu.pafr.richrail.train.domain.TrainNotFoundException;
 import nl.hu.pafr.richrail.train.domain.repository.TrainRepository;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.Collection;
 
 
@@ -27,9 +28,8 @@ public class TrainService {
         return train;
     }
 
-    public void deleteTrain(String key) {
-
-        this.repository.delete(key);
+    public void deleteTrain(String name) {
+        this.repository.delete(name);
     }
 
     public Train findTrainByName(String name) {
@@ -46,15 +46,18 @@ public class TrainService {
     }
 
     public Collection<Train> listTrains() {
-
         return this.repository.findAll();
     }
 
-    public void addComponentToTrain(Long trainId, RollingComponent component) {
+    public Train addComponentToTrain(String name, RollingComponent component) {
+        Train train = this.findTrainByName(name);
+        train.add(component);
 
+        return train;
     }
 
-    public void removeComponentFromTrain(Long trainId, int index) {
-
+    public void removeComponentFromTrain(String name, int index) {
+        Train train = this.findTrainByName(name);
+        train.remove(index);
     }
 }
